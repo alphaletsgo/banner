@@ -2,6 +2,12 @@
 
 这是一个实现了广告栏的小控件，包含了自动播放、轮播等功能呢！
 
+该插件依赖如下：
+```
+    compile 'com.github.bumptech.glide:glide:3.6.0'
+    compile 'cn.isif.alibs:alibs:1.0.3'
+```
+
 ### 具体使用
 ``` xml
 <?xml version="1.0" encoding="utf-8"?>

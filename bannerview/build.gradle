@@ -1,4 +1,11 @@
+/*gradle使用命令
+第一步：graldew.bat install
+第二步：gradlew.bat bintrayUpload
+*/
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 23
@@ -24,4 +31,89 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.github.bumptech.glide:glide:3.6.0'
     compile 'cn.isif.alibs:alibs:1.0.3'
+}
+
+// 定义url变量
+def siteUrl = 'https://github.com/yieryi/banner'
+def gitUrl = 'https://github.com/yieryi/banner.git'
+
+group = 'cn.isif.plug.bannerview'
+version = '1.0.0'
+
+//配置source jar的生成
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+//source jar打包
+artifacts {
+    archives sourcesJar
+}
+//javadoc 打包配置
+android.libraryVariants.all { variant ->
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        title = "Documentation for Android $android.defaultConfig.versionName b$android.defaultConfig.versionCode"
+        destinationDir = new File("${project.getProjectDir()}/doc/compiled/", variant.baseName)
+        source = variant.javaCompile.source
+
+        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+
+        description "Generates Javadoc for $variant.name."
+
+        options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PRIVATE
+        options.links("http://docs.oracle.com/javase/7/docs/api/");
+        options.links("http://developer.android.com/reference/reference/");
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+    }
+}
+
+//读取本地用户信息配置
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = "bannerview"                // project name in jcenter
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}
+
+//bintray配置
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                name 'tools Code For Android'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'yieryi'
+                        name 'will he'
+                        email 'zhy_ho@126.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
 }
