@@ -9,6 +9,13 @@
 ```
 
 ### 具体使用
+在build.gradle文件中添加依赖
+```
+compile 'cn.isif.plug.bannerview:bannerview:1.0.0'
+```
+
+
+布局xml中
 ``` xml
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
