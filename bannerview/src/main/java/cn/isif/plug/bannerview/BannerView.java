@@ -1,11 +1,11 @@
 package cn.isif.plug.bannerview;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -166,7 +166,7 @@ public class BannerView extends Fragment implements ViewPager.OnPageChangeListen
      * @param banners
      * @throws ClassTypeException
      */
-    public void setData(List<Object> banners) throws ClassTypeException {
+    public void setData(List banners) throws ClassTypeException {
         setData(banners, 0);
     }
 
@@ -177,7 +177,7 @@ public class BannerView extends Fragment implements ViewPager.OnPageChangeListen
      * @param position
      * @throws ClassTypeException
      */
-    public void setData(List<Object> banners, int position) throws ClassTypeException {
+    public void setData(List banners, int position) throws ClassTypeException {
         List<BannerBean> bannerBeans = null;
         if (banners != null && banners.size() > 0) {
             bannerBeans = new ArrayList<>();
