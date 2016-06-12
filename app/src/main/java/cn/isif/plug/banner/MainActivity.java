@@ -26,11 +26,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bannerView = (BannerView) getSupportFragmentManager().findFragmentById(R.id.banner);
-
-        bannerView.setPool(true);
-        bannerView.setAutoWheel(true);
-        bannerView.setDelayedTime(5 * 1000);
+        bannerView = (BannerView) this.findViewById(R.id.banner);
         bannerView.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onBannerClickListener(int position, View view) {

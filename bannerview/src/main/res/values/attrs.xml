@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BannerView">
+        <attr name="isPool" format="boolean" />
+        <attr name="isWheel" format="boolean" />
+        <attr name="delayedTime" format="integer" />
+        <attr name="defPlaceHold" format="reference" />
+        <attr name="errorPicture" format="reference" />
+    </declare-styleable>
+</resources>

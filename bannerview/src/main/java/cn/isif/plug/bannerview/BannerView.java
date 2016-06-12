@@ -1,14 +1,13 @@
 package cn.isif.plug.bannerview;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -32,7 +31,7 @@ import cn.isif.plug.bannerview.util.ViewFactor;
  * <p>
  * Created by dell on 2016/5/31.
  */
-public class BannerView extends Fragment implements ViewPager.OnPageChangeListener {
+public class BannerView extends RelativeLayout implements ViewPager.OnPageChangeListener {
     private ViewPager mViewPager = null;
     private TextView bannerText = null;
     private PagerAdapter pagerAdapter = null;
@@ -56,11 +55,24 @@ public class BannerView extends Fragment implements ViewPager.OnPageChangeListen
     private
     @DrawableRes
     int errorPicture = R.drawable.def_error;
+    private Context mContext = null;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.layout_bannerview, container);
+
+    public BannerView(Context context) {
+        this(context, null);
+    }
+
+    public BannerView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        mContext = context;
+        final TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BannerView, defStyleAttr, 0);
+        initByAttributes(attributes);
+        attributes.recycle();
+        View rootView = View.inflate(context, R.layout.layout_bannerview, this);
         mViewPager = (ViewPager) rootView.findViewById(R.id.mViewPager);
         bannerText = (TextView) rootView.findViewById(R.id.banner_title);
         indicatorLayout = (LinearLayout) rootView.findViewById(R.id.indicatorLayout);
@@ -72,8 +84,18 @@ public class BannerView extends Fragment implements ViewPager.OnPageChangeListen
         } else {
             rootLayout.setVisibility(View.INVISIBLE);
         }
-        return rootView;
+        setAutoWheel(isWheel);
     }
+
+    //属性配置
+    protected void initByAttributes(TypedArray attributes) {
+        isPool = attributes.getBoolean(R.styleable.BannerView_isPool, true);
+        isWheel = attributes.getBoolean(R.styleable.BannerView_isWheel, false);
+        delayedTime = attributes.getInt(R.styleable.BannerView_delayedTime, 3000);
+        defPlaceHold = attributes.getResourceId(R.styleable.BannerView_defPlaceHold, R.drawable._def);
+        errorPicture = attributes.getResourceId(R.styleable.BannerView_errorPicture, R.drawable.def_error);
+    }
+
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -128,7 +150,7 @@ public class BannerView extends Fragment implements ViewPager.OnPageChangeListen
             indicatorViews = new TextView[views.size() - 2];
         }
         for (int i = 0; i < indicatorViews.length; i++) {
-            View view = View.inflate(getActivity(), R.layout
+            View view = View.inflate(mContext, R.layout
                     .layout_indicator, null);
             indicatorViews[i] = (TextView) view.findViewById(R.id.indicator_view);
             indicatorLayout.addView(view);
@@ -204,15 +226,15 @@ public class BannerView extends Fragment implements ViewPager.OnPageChangeListen
         if (bannerBeans == null || bannerBeans.size() <= 0) return;
 
         if (isPool) {
-            View viewFirst = ViewFactor.getImageView(getActivity(), bannerBeans.get(bannerBeans.size() - 1).url.toString(), defPlaceHold, errorPicture);
+            View viewFirst = ViewFactor.getImageView(mContext, bannerBeans.get(bannerBeans.size() - 1).url.toString(), defPlaceHold, errorPicture);
             views.add(viewFirst);
         }
         for (BannerBean bb : bannerBeans) {
-            View viewContent = ViewFactor.getImageView(getActivity(), bb.url.toString(), defPlaceHold, errorPicture);
+            View viewContent = ViewFactor.getImageView(mContext, bb.url.toString(), defPlaceHold, errorPicture);
             views.add(viewContent);
         }
         if (isPool) {
-            View viewEnd = ViewFactor.getImageView(getActivity(), bannerBeans.get(0).url.toString(), defPlaceHold, errorPicture);
+            View viewEnd = ViewFactor.getImageView(mContext, bannerBeans.get(0).url.toString(), defPlaceHold, errorPicture);
             views.add(viewEnd);
         }
 
@@ -245,17 +267,6 @@ public class BannerView extends Fragment implements ViewPager.OnPageChangeListen
         return isPool;
     }
 
-    /**
-     * 设置是否循环滑动
-     * 这个方法必须在setData()之前调用才能生效
-     *
-     * @param pool
-     */
-    public void setPool(boolean pool) {
-        if (bannerBeans == null) {
-            isPool = pool;
-        }
-    }
 
     /**
      * 设置自动轮播

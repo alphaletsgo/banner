@@ -20,15 +20,20 @@ compile 'cn.isif.plug.bannerview:bannerview:1.0.0'
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cn.isif.plug.banner.MainActivity">
 
-    <fragment
+    <cn.isif.plug.bannerview.BannerView
+        app:isPool="false"
+        app:isWheel="false"
+        app:delayedTime="5000"
+        app:defPlaceHold="@drawable/eis"
+        app:errorPicture="@drawable/eis"
         android:id="@+id/banner"
-        android:name="cn.isif.plug.bannerview.BannerView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"></fragment>
+        android:layout_height="250dp"></cn.isif.plug.bannerview.BannerView>
 </RelativeLayout>
 ```
 

@@ -1,5 +1,5 @@
 /*gradle使用命令
-第一步：graldew.bat install
+第一步：gradlew.bat install
 第二步：gradlew.bat bintrayUpload
 */
 
@@ -38,7 +38,7 @@ def siteUrl = 'https://github.com/yieryi/banner'
 def gitUrl = 'https://github.com/yieryi/banner.git'
 
 group = 'cn.isif.plug.bannerview'
-version = '1.0.2'
+version = '1.0.3'
 
 //配置source jar的生成
 task sourcesJar(type: Jar) {
