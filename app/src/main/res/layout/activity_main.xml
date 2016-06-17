@@ -7,9 +7,9 @@
     tools:context="cn.isif.plug.banner.MainActivity">
 
     <cn.isif.plug.bannerview.BannerView
-        app:isPool="false"
-        app:isWheel="false"
-        app:delayedTime="5000"
+        app:isPool="true"
+        app:isWheel="true"
+        app:delayedTime="2000"
         app:defPlaceHold="@drawable/eis"
         app:errorPicture="@drawable/eis"
         android:id="@+id/banner"

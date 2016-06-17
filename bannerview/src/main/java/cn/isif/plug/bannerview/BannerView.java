@@ -18,7 +18,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.isif.alibs.utils.log.ALog;
 import cn.isif.plug.bannerview.bean.BannerBean;
 import cn.isif.plug.bannerview.exception.ClassTypeException;
 import cn.isif.plug.bannerview.listener.OnBannerClickListener;
@@ -388,7 +387,6 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            ALog.d("destroyItem");
             try {
                 container.removeView(views.get(position));
             } catch (IndexOutOfBoundsException e) {
