@@ -11,7 +11,7 @@
 ### 具体使用
 在build.gradle文件中添加依赖
 ```
-compile 'cn.isif.plug.bannerview:bannerview:1.0.3'
+compile 'cn.isif.plug.bannerview:bannerview:1.0.5'
 ```
 
 

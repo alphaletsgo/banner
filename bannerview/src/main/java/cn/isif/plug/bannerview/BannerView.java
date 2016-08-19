@@ -27,7 +27,7 @@ import cn.isif.plug.bannerview.util.ViewFactor;
 /**
  * 可配置的循环的banner
  * 基于Viewpager实现，可自动轮播
- * <p>
+ * <p/>
  * Created by dell on 2016/5/31.
  */
 public class BannerView extends RelativeLayout implements ViewPager.OnPageChangeListener {
@@ -352,6 +352,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if (weakReference.get() == null) return;
             switch (msg.what) {
                 case MSG_WHEEL:
                     weakReference.get().hasNext();
