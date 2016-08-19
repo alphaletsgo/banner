@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity {
         int i = 0;
         for (String u : urls) {
             BannerTest bt = new BannerTest();
-            bt.oot = "Banner [ " + i + " ]";
+            bt.oot = "好多文字测试 [ " + i + " ]";
             bt.path = u;
             bannerBeen.add(bt);
             i++;
