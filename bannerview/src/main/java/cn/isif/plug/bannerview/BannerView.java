@@ -8,6 +8,8 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -55,6 +57,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
     @DrawableRes
     int errorPicture = R.drawable.def_error;
     private Context mContext = null;
+    private boolean isTouch = false;
 
 
     public BannerView(Context context) {
@@ -78,6 +81,20 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
         rootLayout = (RelativeLayout) rootView.findViewById(R.id.root_);
         mViewPager.addOnPageChangeListener(this);
         mViewPager.setOffscreenPageLimit(3);
+
+        mViewPager.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        isTouch = false;
+                        break;
+                    default:
+                        isTouch = true;
+                }
+                return false;
+            }
+        });
         if (views != null && views.size() > 0) {
             rootLayout.setVisibility(View.VISIBLE);
         } else {
@@ -172,7 +189,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
     }
 
     private void hasNext() {
-        if (views == null || views.size() <= 0) return;
+        if (views == null || views.size() <= 0 || isTouch) return;
         int max = views.size() + 1;
         int position = (currentPage + 1) % views.size();
         mViewPager.setCurrentItem(position, true);
@@ -274,7 +291,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
      */
     public void setAutoWheel(boolean auto) {
         isWheel = auto;
-        if (auto) {
+        if (auto && !isTouch) {
             mHandler.postDelayed(wheelRunnable, delayedTime);
         }
     }
@@ -339,7 +356,6 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
                 mHandler.obtainMessage(MSG_WHEEL).sendToTarget();
             }
         }
-
     }
 
     static class BannerHandler extends Handler {
@@ -405,4 +421,5 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
             return views.size();
         }
     }
+
 }
