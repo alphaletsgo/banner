@@ -2,9 +2,7 @@ package cn.isif.plug.banner;
 
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import cn.isif.plug.banner.bean.BannerTest;
 import cn.isif.plug.bannerview.BannerView;
 import cn.isif.plug.bannerview.exception.ClassTypeException;
 import cn.isif.plug.bannerview.listener.OnBannerClickListener;
+import cn.isif.plug.bannerview.listener.OnBannerFlingListener;
 
 
 public class MainActivity extends FragmentActivity {
@@ -31,7 +30,15 @@ public class MainActivity extends FragmentActivity {
         bannerView.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onBannerClickListener(int position, View view) {
-                ALog.d("" + position);
+                ALog.d("onBannerClickListener" + position);
+            }
+        });
+
+        bannerView.setOnBannerFlingListener(new OnBannerFlingListener() {
+            @Override
+            public void onBannerFlingListener(float velocityX, float velocityY) {
+                ALog.d("onBannerPageFlingListener"+velocityX);
+                ALog.d("onBannerPageFlingListener"+velocityY);
             }
         });
 

@@ -8,7 +8,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +23,7 @@ import java.util.List;
 import cn.isif.plug.bannerview.bean.BannerBean;
 import cn.isif.plug.bannerview.exception.ClassTypeException;
 import cn.isif.plug.bannerview.listener.OnBannerClickListener;
+import cn.isif.plug.bannerview.listener.OnBannerFlingListener;
 import cn.isif.plug.bannerview.util.BeanRefUtil;
 import cn.isif.plug.bannerview.util.ViewFactor;
 
@@ -32,7 +33,8 @@ import cn.isif.plug.bannerview.util.ViewFactor;
  * <p/>
  * Created by dell on 2016/5/31.
  */
-public class BannerView extends RelativeLayout implements ViewPager.OnPageChangeListener {
+public class BannerView extends RelativeLayout implements ViewPager.OnPageChangeListener, GestureDetector.OnGestureListener {
+    public static final String TAG = "BannerView";
     private ViewPager mViewPager = null;
     private TextView bannerText = null;
     private PagerAdapter pagerAdapter = null;
@@ -47,6 +49,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
     private List<BannerBean> bannerBeans = null;
     private Handler mHandler = new BannerHandler(this);
     private OnBannerClickListener onBannerClickListener = null;
+    private OnBannerFlingListener onBannerFlingListener = null;
     private Runnable wheelRunnable = new AutoWheel();
     private int realPosition = 0;
     private static final int MSG_WHEEL = 1;
@@ -58,6 +61,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
     int errorPicture = R.drawable.def_error;
     private Context mContext = null;
     private boolean isTouch = false;
+    private GestureDetector detector;
 
 
     public BannerView(Context context) {
@@ -85,6 +89,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
         mViewPager.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                detector.onTouchEvent(event);
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
                         isTouch = false;
@@ -101,6 +106,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
             rootLayout.setVisibility(View.INVISIBLE);
         }
         setAutoWheel(isWheel);
+        detector = new GestureDetector(context, this);
     }
 
     //属性配置
@@ -309,6 +315,14 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
         this.onBannerClickListener = null;
     }
 
+    public void setOnBannerFlingListener(OnBannerFlingListener onBannerFlingListener) {
+        this.onBannerFlingListener = onBannerFlingListener;
+    }
+
+    public void removeOnBannerChangeListener() {
+        this.onBannerFlingListener = null;
+    }
+
     /**
      * 设置占位图
      * 该方法在setData()方法之前
@@ -347,6 +361,41 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
         if (delayedTime >= 1000) {
             this.delayedTime = delayedTime;
         }
+    }
+
+    //-----------手势处理----------
+
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if (onBannerFlingListener != null) {
+            onBannerFlingListener.onBannerFlingListener(velocityX, velocityY);
+        }
+        return false;
     }
 
     class AutoWheel implements Runnable {
