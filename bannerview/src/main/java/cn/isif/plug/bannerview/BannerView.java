@@ -222,6 +222,9 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
      * @throws ClassTypeException
      */
     public void setData(List banners, int position) throws ClassTypeException {
+        if (banners == null && banners.size() <= 0 && this.bannerBeans != null && bannerBeans.size() > 0) {
+            return;
+        }
         List<BannerBean> bannerBeans = null;
         if (banners != null && banners.size() > 0) {
             bannerBeans = new ArrayList<>();
