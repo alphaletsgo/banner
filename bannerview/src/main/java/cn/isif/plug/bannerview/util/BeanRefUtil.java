@@ -33,7 +33,12 @@ public class BeanRefUtil {
                 String methodName = getMethodName(f);
                 Method m = bannerBean.getClass().getMethod(methodName, Object.class);
                 f.setAccessible(true);
-                String value = f.get(obj).toString();
+                String value = "";
+                try {
+                    value = f.get(obj).toString();
+                }catch (Exception e){
+                    value = "";
+                }
                 m.invoke(bannerBean, value);
             } catch (Exception e) {
                 throw new ClassTypeException("Error,ClassType Exception");

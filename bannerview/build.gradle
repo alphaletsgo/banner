@@ -37,7 +37,7 @@ def siteUrl = 'https://github.com/yieryi/banner'
 def gitUrl = 'https://github.com/yieryi/banner.git'
 
 group = 'cn.isif.plug.bannerview'
-version = '1.0.8'
+version = '1.0.9'
 
 //配置source jar的生成
 task sourcesJar(type: Jar) {
