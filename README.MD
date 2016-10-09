@@ -5,13 +5,13 @@
 该插件依赖如下：
 ```
     compile 'com.github.bumptech.glide:glide:3.6.0'
-    compile 'cn.isif.alibs:alibs:1.0.3'
+    compile 'cn.isif.alibs:alibs:1.0.4'
 ```
 
 ### 具体使用
 在build.gradle文件中添加依赖
 ```
-compile 'cn.isif.plug.bannerview:bannerview:1.0.5'
+compile 'cn.isif.plug.bannerview:bannerview:1.0.7'
 ```
 
 
