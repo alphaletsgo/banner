@@ -83,7 +83,7 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
         bannerText = (TextView) rootView.findViewById(R.id.banner_title);
         indicatorLayout = (LinearLayout) rootView.findViewById(R.id.indicatorLayout);
         rootLayout = (RelativeLayout) rootView.findViewById(R.id.root_);
-        mViewPager.addOnPageChangeListener(this);
+
         mViewPager.setOffscreenPageLimit(3);
 
         mViewPager.setOnTouchListener(new OnTouchListener() {
@@ -133,7 +133,11 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
         } else {
             realPosition = position;
         }
-        bannerText.setText(bannerBeans.get(realPosition).title.toString());
+        String title = bannerBeans.get(realPosition).title.toString();
+        if (title != null && !"".equals(title))
+            bannerText.setText(title);
+        else
+            bannerText.setText("");
     }
 
     @Override
@@ -222,6 +226,11 @@ public class BannerView extends RelativeLayout implements ViewPager.OnPageChange
      * @throws ClassTypeException
      */
     public void setData(List banners, int position) throws ClassTypeException {
+        if (banners == null && banners.size() <= 0 && this.bannerBeans != null && bannerBeans.size() > 0) {
+            return;
+        }
+        mViewPager.removeOnPageChangeListener(this);
+        mViewPager.addOnPageChangeListener(this);
         List<BannerBean> bannerBeans = null;
         if (banners != null && banners.size() > 0) {
             bannerBeans = new ArrayList<>();
